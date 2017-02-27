@@ -103,8 +103,8 @@
 				  <div class="index-content clearfix">
 					  <div class="index-content-left">
 						  <h2 class="index-content-title">Контактная информация</h2>
-						  <p>Барбершоп "Бородинский"</br>
-							 Адрес: г.Санкт-Петербург, б.Конюшенная, д.19/8</br>
+						  <p>Барбершоп "Бородинский"<br>
+							 Адрес: г.Санкт-Петербург, б.Конюшенная, д.19/8<br>
 							 Телефон: 666-02-66
 						  </p>
 
@@ -128,9 +128,7 @@
 								</form>
 						</div>
 			  </div>
-		  </div>
-
-	  </main>
+		</main>
 
 															<!--main off-->
 			<footer class="main-footer">
@@ -162,7 +160,7 @@
 		<button class="modal-content-close" type="button" title="Закрыть">Закрыть</button>
 		<h2 class="modal-content-title">Личный кабинет</h2>
 		<p>Введите пожалуйста свой логин и пароль</p>
-		<form class="login-form" action="https//eho.htmlacademy.ru" method="post">
+		<form class="login-form" action="https://echo.htmlacademy.ru" method="post">
 			<input class="icon-user" type="text" name="login" placeholder="Логин">
 			<input class="icon-password" type="password" name="password" placeholder="Пароль">
 			<label class="login-checkbox">
@@ -191,8 +189,12 @@
 	 var link = document.querySelector(".login");
 	 var popup = document.querySelector(".modal-content");
 	 var overlay = document.querySelector(".modal-overlay");
-	 var close = document.querySelector(".modal-content-close");
+	 var close = popup.querySelector(".modal-content-close");
 	 var login = popup.querySelector("[name=login]");
+	 var form = popup.querySelector("form");
+	 var password = popup.querySelector("[name=password]");
+	 var storage = localStorage.getItem("login");
+
 
 	 var clickmap = document.querySelector(".footer-contact a");
 	 var showmap = document.querySelector(".modal-content-map");
@@ -203,15 +205,53 @@
 		  event.preventDefault();
 		  popup.classList.add("modal-content-show");
 		  overlay.classList.add("overlay-show");
-		  login.focus();
+
+		 if (storage) {
+			 login.value = storage;
+			 password.focus();
+		 }
+		 else {
+			 login.focus();
+		 }
 	 });
 
-	 close.addEventListener("click", function (event) {
+	 close.addEventListener("click", function(event) {
 		  event.preventDefault();
 		  popup.classList.remove("modal-content-show");
+		  popup.classList.remove("modal-content-error");
 		  overlay.classList.remove("overlay-show");
-
 	 });
+
+
+	 form.addEventListener("submit", function(event) {
+	   if (!login.value || !password.value) {
+		   event.preventDefault();
+		   popup.classList.add("modal-content-error");
+		   console.log("Введите логин и пароль");
+	   } else {
+		   localStorage.setItem("login", login.value);
+
+	   }
+	 });
+
+
+	 window.addEventListener("keydown", function(event) {
+		 if (event.keyCode === 27)
+		   if(popup.classList.contains("modal-content-show") || showmap.classList.contains("modal-content-map"))
+		   {
+			 popup.classList.remove("modal-content-show");
+			 overlay.classList.remove("overlay-show");
+			 popup.classList.remove("modal-content-error");
+
+			 showmap.classList.remove("modal-map-show");
+		 }
+	 });
+
+
+
+
+
+<!--сделаем скрипт для карты -->
 
 
 	 clickmap.addEventListener("click", function (event) {
